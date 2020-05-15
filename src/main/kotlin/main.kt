@@ -14,12 +14,12 @@ fun main(vararg args: String) {
     } else {
         val songName = args[0]
         if (jukeBox[songName] != null) {
+            jukeBox[songName]
+        } else {
             println("Available songs:")
             jukeBox.keys.forEach {
                 println(it)
             }
-            jukeBox[songName]
-        } else {
             null
         }
     }
