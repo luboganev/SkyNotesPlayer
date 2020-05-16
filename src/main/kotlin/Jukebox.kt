@@ -44,8 +44,46 @@ val mario = Song(
     singlePauseMillis = 50
 )
 
+val tetris = Song(
+    songString = "E2*B1C2D2*C2B1A1*" +
+            "A1C2E2*D2C2B1*" +
+            "B1C2D2*E2*C2*A1*A1****" +
+            "D2*F2A2*G2F2E2**C2E2*D2C2B1*" +
+            "B1C2D2*E2*C2*A1*A1****",
+    singlePauseMillis = 200
+)
+
+val elise = Song(
+    songString = "E2*E2*E2B1D2C2A1**" +
+            "C1E1A1B1**" +
+            "E1A1B1C2**" +
+            "E1E2*E2*E2B1D2C2A1**" +
+            "C1E1A1B1**" +
+            "E1C2B1A1****" +
+            "E2*E2*E2B1D2C2A1**" +
+            "C1E1A1B1**" +
+            "E1A1B1C2**" +
+            "E1E2*E2*E2B1D2C2A1**" +
+            "C1E1A1B1**" +
+            "E1C2B1A1**" +
+            "B1C2D2E2**" +
+            "G1F2E2D2**" +
+            "F1E2D2C2**" +
+            "E1D2C2B1**" +
+            "E1E2**" +
+            "E2**E2*E2**E2**E2**E2B1D2C2A1**" +
+            "C1E1A1B1**" +
+            "E1A1B1C2**" +
+            "E1E2*E2*E2B1D2C2A1**" +
+            "C1E1A1B1**" +
+            "E1C2B1A1**",
+    singlePauseMillis = 200
+)
+
 val jukeBox = mapOf<String, Song>(
     "senorita" to senorita,
     "twinkle" to twinkleStar,
-    "mario" to mario
+    "mario" to mario,
+    "tetris" to tetris,
+    "elise" to elise
 )
