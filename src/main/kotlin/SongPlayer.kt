@@ -1,5 +1,5 @@
-import MusicElement.Note
-import MusicElement.Pause
+import SheetElement.Note
+import SheetElement.Pause
 import com.malinskiy.adam.AndroidDebugBridgeClient
 import com.malinskiy.adam.request.sync.ShellCommandRequest
 import kotlinx.coroutines.delay
@@ -7,12 +7,12 @@ import kotlinx.coroutines.delay
 class SongPlayer(
     private val adbClient: AndroidDebugBridgeClient,
     private val deviceSerial: String,
-    private val song: Song,
+    private val songSheet: SongSheet,
     private val keyboard: Keyboard
 ) {
 
     suspend fun play() {
-        song.elements.forEach { musicElement ->
+        songSheet.elements.forEach { musicElement ->
             when (musicElement) {
                 is Note -> {
                     keyboard.keys[musicElement.key]?.let { playNote(it) }
@@ -27,6 +27,6 @@ class SongPlayer(
     }
 
     private suspend fun pause() {
-        delay(song.singlePauseMillis)
+        delay(songSheet.singlePauseMillis)
     }
 }

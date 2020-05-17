@@ -1,89 +1,86 @@
-/**
- * The beginning of Camila Cabello and Shawn Mendes - Señorita
- */
-val senorita = Song(
-    songString = "C3****A2****E2****C3B2****" +
-            "G2****G2C3B2A2B2C3****G2****E2****C3B2****G2****" +
-            "G2C3B2A2G2F2**C3*C3*C3************" +
-            "F2****C3*C3*C3************" +
-            "B2****C3B2C3B2G2********" +
-            "B2****C3B2C3B2G2A2A2",
-    singlePauseMillis = 50
-)
 
-/**
- * Twinkle little star
- */
-val twinkleStar = Song(
-    songString = "G1*G1*D2*D2*E2*E2*D2********" +
-            "C2*C2*B1*B1*A1*A1*G1********" +
-            "D2*D2*C2*C2*B1*B1*A1********" +
-            "D2*D2*C2*C2*B1*B1*A1********" +
-            "G1*G1*D2*D2*E2*E2*D2********" +
-            "C2*C2*B1*B1*A1*A1*G1",
-    singlePauseMillis = 50
-)
+object Jukebox {
 
-/**
- * Super mario
- */
-val mario = Song(
-    songString = "E2E2*E2*C2E2*G2********G1********" +
-            "C2**G1**E1**A1**B1B1**A1" +
-            "G1E2G2A2F2G2E2C2D2B1********" +
-            "C2**G1**E1**A1**B1B1**A1" +
-            "G1E2G2A2F2G2E2C2D2B1********" +
-            "G2*F2D2E2**G1A1C2**A1C2D2********" +
-            "G2*F2D2E2**C3C3C3****************" +
-            "G2*F2D2E2**G1A1C2**A1C2D2********" +
-            "E2**D2**C2********" +
-            "C2C2C2**C2D2E2C2A1G1********" +
-            "C2C2C2**C2D2E2**************" +
-            "C2C2C2**C2D2E2C2A1G1********" +
-            "E2E2E2**C2E2G2********G1********",
-    singlePauseMillis = 50
-)
+    val tracks: List<SongSheet> by lazy {
+        listOf(
 
-val tetris = Song(
-    songString = "E2*B1C2D2*C2B1A1*" +
-            "A1C2E2*D2C2B1*" +
-            "B1C2D2*E2*C2*A1*A1****" +
-            "D2*F2A2*G2F2E2**C2E2*D2C2B1*" +
-            "B1C2D2*E2*C2*A1*A1****",
-    singlePauseMillis = 200
-)
+            SongSheet(
+                artistAndTitle = "Camila Cabello ft. Shawn Mendes - Señorita",
+                sheet = "c+****a****e****c+b****" +
+                        "g****gc+babc+****g****e****c+b****g****" +
+                        "gc+bagf**c+*c+*c+************" +
+                        "f****c+*c+*c+************" +
+                        "b****c+bc+bg********" +
+                        "b****c+bc+bgaa",
+                singlePauseMillis = 50
+            ),
 
-val elise = Song(
-    songString = "E2*E2*E2B1D2C2A1**" +
-            "C1E1A1B1**" +
-            "E1A1B1C2**" +
-            "E1E2*E2*E2B1D2C2A1**" +
-            "C1E1A1B1**" +
-            "E1C2B1A1****" +
-            "E2*E2*E2B1D2C2A1**" +
-            "C1E1A1B1**" +
-            "E1A1B1C2**" +
-            "E1E2*E2*E2B1D2C2A1**" +
-            "C1E1A1B1**" +
-            "E1C2B1A1**" +
-            "B1C2D2E2**" +
-            "G1F2E2D2**" +
-            "F1E2D2C2**" +
-            "E1D2C2B1**" +
-            "E1E2**" +
-            "E2**E2*E2**E2**E2**E2B1D2C2A1**" +
-            "C1E1A1B1**" +
-            "E1A1B1C2**" +
-            "E1E2*E2*E2B1D2C2A1**" +
-            "C1E1A1B1**" +
-            "E1C2B1A1**",
-    singlePauseMillis = 200
-)
+            SongSheet(
+                artistAndTitle = "Twinkle twinkle little star",
+                sheet = "g-*g-*d*d*e*e*d********" +
+                        "c*c*b-*b-*a-*a-*g-********" +
+                        "d*d*c*c*b-*b-*a-********" +
+                        "d*d*c*c*b-*b-*a-********" +
+                        "g-*g-*d*d*e*e*d********" +
+                        "c*c*b-*b-*a-*a-*g-",
+                singlePauseMillis = 50
+            ),
 
-val jukeBox = mapOf<String, Song>(
-    "senorita" to senorita,
-    "twinkle" to twinkleStar,
-    "mario" to mario,
-    "tetris" to tetris,
-    "elise" to elise
-)
+            SongSheet(
+                artistAndTitle = "Super Mario theme",
+                sheet = "ee*e*ce*g********g-********" +
+                        "c**g-**e-**a-**b-b-**a-" +
+                        "g-egafgecdb-********" +
+                        "c**g-**e-**a-**b-b-**a-" +
+                        "g-egafgecdb-********" +
+                        "g*fde**g-a-c**a-cd********" +
+                        "g*fde**c+c+c+****************" +
+                        "g*fde**g-a-c**a-cd********" +
+                        "e**d**c********" +
+                        "ccc**cdeca-g-********" +
+                        "ccc**cde**************" +
+                        "ccc**cdeca-g-********" +
+                        "eee**ceg********g-********",
+                singlePauseMillis = 50
+            ),
+
+            SongSheet(
+                artistAndTitle = "Tetris theme",
+                sheet = "e*b-cd*cb-a-*" +
+                        "a-ce*dcb-*" +
+                        "b-cd*e*c*a-*a-****" +
+                        "d*fa*gfe**ce*dcb-*" +
+                        "b-cd*e*c*a-*a-****",
+                singlePauseMillis = 200
+            ),
+
+            SongSheet(
+                artistAndTitle = "Ludwig van Beethoven - Für Elise",
+                sheet = "e*e*eb-dca-**" +
+                        "c-e-a-b-**" +
+                        "e-a-b-c**" +
+                        "e-e*e*eb-dca-**" +
+                        "c-e-a-b-**" +
+                        "e-cb-a-****" +
+                        "e*e*eb-dca-**" +
+                        "c-e-a-b-**" +
+                        "e-a-b-c**" +
+                        "e-e*e*eb-dca-**" +
+                        "c-e-a-b-**" +
+                        "e-cb-a-**" +
+                        "b-cde**" +
+                        "g-fed**" +
+                        "f-edc**" +
+                        "e-dcb-**" +
+                        "e-e**" +
+                        "e**e*e**e**e**eb-dca-**" +
+                        "c-e-a-b-**" +
+                        "e-a-b-c**" +
+                        "e-e*e*eb-dca-**" +
+                        "c-e-a-b-**" +
+                        "e-cb-a-**",
+                singlePauseMillis = 200
+            )
+        )
+    }
+}

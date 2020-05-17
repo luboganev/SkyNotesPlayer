@@ -5,22 +5,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
 fun main(vararg args: String) {
-    val song = if (args.isEmpty()) {
-        println("Available songs:")
-        jukeBox.keys.forEach {
-            println(it)
-        }
+    val song = if (args.isEmpty() || args[0].toIntOrNull() == null) {
+        printInstructions()
         null
     } else {
-        val songName = args[0]
-        if (jukeBox[songName] != null) {
-            jukeBox[songName]
-        } else {
-            println("Available songs:")
-            jukeBox.keys.forEach {
-                println(it)
-            }
+        val number = args[0].toInt()
+        if (number - 1 !in Jukebox.tracks.indices) {
+            printInstructions()
             null
+        } else {
+            Jukebox.tracks[number - 1]
         }
     }
 
@@ -40,9 +34,17 @@ fun main(vararg args: String) {
             SongPlayer(
                 adbClient = adb,
                 deviceSerial = serial,
-                keyboard = Keyboard.Pixel2,
-                song = song
+                songSheet = song,
+                keyboard = Keyboard.Pixel2
             ).play()
         }
     }
+}
+
+private fun printInstructions() {
+    println("Available songs:")
+    Jukebox.tracks.forEachIndexed { index, track ->
+        println("${index + 1}. ${track.artistAndTitle}")
+    }
+    println("Please start with song number")
 }

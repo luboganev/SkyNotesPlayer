@@ -4,10 +4,24 @@
 data class TapPoint(val x: Int, val y: Int)
 
 /**
- * The available keys for all musical instruments
+ * The available keys in the game
  */
-enum class Key {
-    C1, D1, E1, F1, G1, A1, B1, C2, D2, E2, F2, G2, A2, B2, C3
+enum class Key(val sheetSymbol: String) {
+    C1("C-"),
+    D1("D-"),
+    E1("E-"),
+    F1("F-"),
+    G1("G-"),
+    A1("A-"),
+    B1("B-"),
+    C2("C"),
+    D2("D"),
+    E2("E"),
+    F2("F"),
+    G2("G"),
+    A2("A"),
+    B2("B"),
+    C3("C+")
 }
 
 /**
