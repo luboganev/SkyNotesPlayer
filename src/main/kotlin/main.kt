@@ -3,61 +3,92 @@ import com.malinskiy.adam.interactor.StartAdbInteractor
 import com.malinskiy.adam.request.devices.ListDevicesRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlin.system.exitProcess
 
-fun main(vararg args: String) {
-    val song: SongSheet? = when {
-        args.size == 1 -> {
-            val trackNumberIndex = args[0].toIntOrNull()?.let { it - 1 }
-            if (trackNumberIndex == null || trackNumberIndex !in Jukebox.tracks.indices) {
-                null
-            } else {
-                Jukebox.tracks[trackNumberIndex]
-            }
-        }
-        args.size == 4 && args[0] == "-p" && args[2] == "-s" -> {
-            val pause = args[1].toIntOrNull()
-            val songSheet = args[3]
-            pause?.let {
-                SongSheet(
-                    artistAndTitle = "Custom sheet",
-                    sheet = songSheet,
-                    singlePauseMillis = it.toLong()
-                )
-            }
-        }
-        else -> null
+private val adb by lazy {
+    AndroidDebugBridgeClientFactory().apply {
+        coroutineContext = Dispatchers.IO
+    }.build()
+}
+
+fun main() {
+    runBlocking {
+        //Verify the ADB server is running
+        StartAdbInteractor().execute()
     }
 
-    if (song != null) {
-        runBlocking {
-            //Verify the ADB server is running
-            StartAdbInteractor().execute()
-            //Create AndroidDebugBridgeServer instance
-            val adb = AndroidDebugBridgeClientFactory().apply {
-                coroutineContext = Dispatchers.IO
-            }.build()
-            //Execute requests using suspendable execute() methods. First list available devices
-            val devices = adb.execute(request = ListDevicesRequest())
+    while (true) {
+        printInstructions()
+        val input = readLine()
+        if (!input.isNullOrBlank()) {
+            val trackNumberIndex = input.toIntOrNull()?.let { it - 1 }
+            if (trackNumberIndex != null) {
+                if (trackNumberIndex in Jukebox.tracks.indices) {
+                    playSong(Jukebox.tracks[trackNumberIndex])
+                }
+            } else {
+                println("You have typed in the following music sheet:")
+                println(input)
+                println("Please select the length of a pause in milliseconds or type \"cancel\" to cancel.")
+                val command = readLine()
+                if (command != "cancel") {
+                    val pause = command?.toLongOrNull()
+                    if (pause != null) {
+                        playSong(
+                            SongSheet(
+                                artistAndTitle = "Custom sheet with pause length $pause",
+                                sheet = input,
+                                singlePauseMillis = pause
+                            )
+                        )
+                    } else {
+                        println("Invalid pause milliseconds length.")
+                    }
+                }
+            }
+        }
+    }
+}
+
+private fun printInstructions() {
+    println()
+    println()
+    println("----------------------------------------------------")
+    println("Available songs:")
+    Jukebox.tracks.forEachIndexed { index, track ->
+        println("${index + 1}. ${track.artistAndTitle}")
+    }
+    println("Please select song number or start with custom song.")
+    println("----------------------------------------------------")
+    println("Or you can play a custom sheet. Just type it in and press enter.")
+}
+
+private fun playSong(songSheet: SongSheet) {
+    runBlocking {
+        //Execute requests using suspendable execute() methods. First list available devices
+        val devices = adb.execute(request = ListDevicesRequest())
+        if (devices.isNotEmpty()) {
             val serial = devices.first().serial
+
+            println()
+            println("Now playing: ${songSheet.artistAndTitle}")
 
             // Play a song
             SongPlayer(
                 adbClient = adb,
                 deviceSerial = serial,
-                songSheet = song,
+                songSheet = songSheet,
                 keyboard = Keyboard.Pixel2
-            ).play()
+            ).play { playbackProgress, currentlyPlaying ->
+                if (playbackProgress % 10 == 0) {
+                    println()
+                    println("Playback ($playbackProgress%)")
+                }
+                print("$currentlyPlaying ")
+            }
+        } else {
+            println("No device attached. Please attach an Android device before you continue")
+            exitProcess(0)
         }
-    } else {
-        printInstructions()
     }
-}
-
-private fun printInstructions() {
-    println("Available songs:")
-    Jukebox.tracks.forEachIndexed { index, track ->
-        println("${index + 1}. ${track.artistAndTitle}")
-    }
-    println("Please start with song number or start with cusom song.")
-    println("To start a custom song type -p <pause length milliseconds> -s <sheet string>")
 }

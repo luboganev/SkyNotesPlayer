@@ -3,6 +3,7 @@ import SheetElement.Pause
 import com.malinskiy.adam.AndroidDebugBridgeClient
 import com.malinskiy.adam.request.sync.ShellCommandRequest
 import kotlinx.coroutines.delay
+import kotlin.math.roundToInt
 
 class SongPlayer(
     private val adbClient: AndroidDebugBridgeClient,
@@ -11,13 +12,25 @@ class SongPlayer(
     private val keyboard: Keyboard
 ) {
 
-    suspend fun play() {
-        songSheet.elements.forEach { musicElement ->
-            when (musicElement) {
+    suspend fun play(playCallback: ((playbackProgress: Int, currentlyPlaying: String) -> Unit)) {
+        val totalElementsToPlay = songSheet.elements.size
+        songSheet.elements.forEachIndexed { index, element ->
+            val progress = ((index.toDouble() / totalElementsToPlay.toDouble()) * 100.0).roundToInt()
+            when (element) {
                 is Note -> {
-                    keyboard.keys[musicElement.key]?.let { playNote(it) }
+                    playCallback(
+                        progress,
+                        element.key.sheetSymbol
+                    )
+                    keyboard.keys[element.key]?.let { playNote(it) }
                 }
-                is Pause -> pause()
+                is Pause -> {
+                    playCallback(
+                        progress,
+                        "*"
+                    )
+                    pause()
+                }
             }
         }
     }
