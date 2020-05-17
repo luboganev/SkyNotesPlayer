@@ -5,17 +5,27 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
 fun main(vararg args: String) {
-    val song = if (args.isEmpty() || args[0].toIntOrNull() == null) {
-        printInstructions()
-        null
-    } else {
-        val number = args[0].toInt()
-        if (number - 1 !in Jukebox.tracks.indices) {
-            printInstructions()
-            null
-        } else {
-            Jukebox.tracks[number - 1]
+    val song: SongSheet? = when {
+        args.size == 1 -> {
+            val trackNumberIndex = args[0].toIntOrNull()?.let { it - 1 }
+            if (trackNumberIndex == null || trackNumberIndex !in Jukebox.tracks.indices) {
+                null
+            } else {
+                Jukebox.tracks[trackNumberIndex]
+            }
         }
+        args.size == 4 && args[0] == "-p" && args[2] == "-s" -> {
+            val pause = args[1].toIntOrNull()
+            val songSheet = args[3]
+            pause?.let {
+                SongSheet(
+                    artistAndTitle = "Custom sheet",
+                    sheet = songSheet,
+                    singlePauseMillis = it.toLong()
+                )
+            }
+        }
+        else -> null
     }
 
     if (song != null) {
@@ -38,6 +48,8 @@ fun main(vararg args: String) {
                 keyboard = Keyboard.Pixel2
             ).play()
         }
+    } else {
+        printInstructions()
     }
 }
 
@@ -46,5 +58,6 @@ private fun printInstructions() {
     Jukebox.tracks.forEachIndexed { index, track ->
         println("${index + 1}. ${track.artistAndTitle}")
     }
-    println("Please start with song number")
+    println("Please start with song number or start with cusom song.")
+    println("To start a custom song type -p <pause length milliseconds> -s <sheet string>")
 }
