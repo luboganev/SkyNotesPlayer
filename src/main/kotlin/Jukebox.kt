@@ -80,6 +80,18 @@ object Jukebox {
                         "c-e-a-b-**" +
                         "e-cb-a-**",
                 singlePauseMillis = 200
+            ),
+
+            SongSheet(
+                artistAndTitle = "Sam Smith, Normani - Dancing With A Stranger",
+                sheet = "e**a-a-a-g-g-*****ea-a-a-g-g-***e**a-a-a-g-e-g-*e-e-d-d-*c-*",
+                singlePauseMillis = 100
+            ),
+
+            SongSheet(
+                artistAndTitle = "Lil Nas X - Old Town Road",
+                sheet = "eee**d**c**a-a-ed**c**a-a-******d**********dec**b-**b-a-a-a-e**d**c**a-a-edc**a-a-******d********dec**a-g-a-",
+                singlePauseMillis = 100
             )
         )
     }
